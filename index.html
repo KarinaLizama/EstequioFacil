@@ -2,54 +2,76 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Quimitool7</title>
+<title>ChemEasy PRO</title>
+
 <style>
 body {
-    font-family: Arial;
-    background: #0f172a;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
     color: white;
     text-align: center;
+    margin: 0;
 }
+
 .container {
-    background: #1e293b;
-    padding: 20px;
-    margin: 30px auto;
+    max-width: 420px;
+    margin: 40px auto;
+    background: rgba(255,255,255,0.05);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+h1 { margin-bottom: 5px; }
+
+input, select {
     width: 90%;
-    max-width: 500px;
+    padding: 12px;
+    margin: 8px;
     border-radius: 10px;
-}
-input, button, select {
-    margin: 10px;
-    padding: 10px;
-    width: 80%;
-    border-radius: 5px;
-}
-button {
-    background: #22c55e;
-    color: white;
     border: none;
-    cursor: pointer;
 }
-.resultado {
-    margin-top: 20px;
-    background: #334155;
+
+button {
+    width: 95%;
     padding: 15px;
     border-radius: 10px;
+    border: none;
+    background: #22c55e;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.resultado {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+.explicacion {
+    margin-top: 10px;
+    font-size: 13px;
+    opacity: 0.8;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🧪 Quimitool7</h1>
-<p>Balance estequiométrico fácil</p>
-
 <div class="container">
 
-<input id="reactivo1" placeholder="Masa Reactivo A (g)">
-<input id="reactivo2" placeholder="Masa Reactivo B (g)">
+<h1>🧪 ChemEasy PRO</h1>
+<p>Estequiometría simplificada</p>
 
-<select id="opcion">
+<input id="masaA" placeholder="Masa Reactivo A (g)">
+<input id="masaB" placeholder="Masa Reactivo B (g)">
+
+<input id="mmA" placeholder="Masa molar A (g/mol)">
+<input id="mmB" placeholder="Masa molar B (g/mol)">
+
+<select id="tipo">
     <option value="limitante">Reactivo limitante</option>
     <option value="exceso">Reactivo en exceso</option>
     <option value="rendimiento">Rendimiento (%)</option>
@@ -58,48 +80,66 @@ button {
 
 <button onclick="calcular()">Calcular</button>
 
-<div class="resultado" id="resultado"></div>
+<div class="resultado" id="res"></div>
+<div class="explicacion" id="exp"></div>
 
 </div>
 
 <script>
-function calcular() {
+function calcular(){
 
-    let a = parseFloat(document.getElementById("reactivo1").value);
-    let b = parseFloat(document.getElementById("reactivo2").value);
-    let opcion = document.getElementById("opcion").value;
-    let resultado = "";
+let mA = parseFloat(masaA.value);
+let mB = parseFloat(masaB.value);
+let mmA = parseFloat(mmA.value);
+let mmB = parseFloat(mmB.value);
+let tipo = document.getElementById("tipo").value;
 
-    if (isNaN(a) || isNaN(b)) {
-        resultado = "⚠️ Ingresa valores válidos";
-    } else {
+if(isNaN(mA)||isNaN(mB)||isNaN(mmA)||isNaN(mmB)){
+    res.innerHTML="⚠️ Completa todos los datos";
+    exp.innerHTML="";
+    return;
+}
 
-        if (opcion === "limitante") {
-            resultado = (a < b)
-                ? "Reactivo A es limitante"
-                : "Reactivo B es limitante";
-        }
+// conversion a moles
+let nA = mA/mmA;
+let nB = mB/mmB;
 
-        if (opcion === "exceso") {
-            resultado = (a > b)
-                ? "Reactivo A está en exceso"
-                : "Reactivo B está en exceso";
-        }
+let resultado="";
+let explicacion="";
 
-        if (opcion === "rendimiento") {
-            let teorico = Math.max(a, b);
-            let real = Math.min(a, b);
-            let rendimiento = (real / teorico) * 100;
-            resultado = "Rendimiento: " + rendimiento.toFixed(2) + "%";
-        }
-
-        if (opcion === "pureza") {
-            let pureza = (a / (a + b)) * 100;
-            resultado = "Pureza: " + pureza.toFixed(2) + "%";
-        }
+if(tipo==="limitante"){
+    if(nA<nB){
+        resultado="🔬 Reactivo A es LIMITANTE";
+    }else{
+        resultado="🔬 Reactivo B es LIMITANTE";
     }
+    explicacion="Se comparan los moles de cada reactivo. El menor es el limitante.";
+}
 
-    document.getElementById("resultado").innerHTML = resultado;
+if(tipo==="exceso"){
+    if(nA>nB){
+        resultado="⚗️ Reactivo A está en EXCESO";
+    }else{
+        resultado="⚗️ Reactivo B está en EXCESO";
+    }
+    explicacion="El reactivo con mayor cantidad de moles queda en exceso.";
+}
+
+if(tipo==="rendimiento"){
+    let rend = (Math.min(nA,nB)/Math.max(nA,nB))*100;
+    resultado="📊 Rendimiento: "+rend.toFixed(2)+"%";
+    explicacion="Rendimiento = (cantidad real / teórica) × 100";
+}
+
+if(tipo==="pureza"){
+    let pureza = (mA/(mA+mB))*100;
+    resultado="🧪 Pureza: "+pureza.toFixed(2)+"%";
+    explicacion="Pureza = (masa pura / masa total) × 100";
+}
+
+res.innerHTML=resultado;
+exp.innerHTML=explicacion;
+
 }
 </script>
 
