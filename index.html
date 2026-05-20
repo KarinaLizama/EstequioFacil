@@ -80,7 +80,7 @@ button {
 
 <button onclick="calcular()">Calcular</button>
 
-<div class="resultado" id="res"></div>
+<div class="resultado" id="res">Resultado aparecerá aquí</div>
 <div class="explicacion" id="exp"></div>
 
 </div>
@@ -88,21 +88,21 @@ button {
 <script>
 function calcular(){
 
-let mA = parseFloat(masaA.value);
-let mB = parseFloat(masaB.value);
-let mmA = parseFloat(mmA.value);
-let mmB = parseFloat(mmB.value);
+let mA = parseFloat(document.getElementById("masaA").value);
+let mB = parseFloat(document.getElementById("masaB").value);
+let mmA_val = parseFloat(document.getElementById("mmA").value);
+let mmB_val = parseFloat(document.getElementById("mmB").value);
 let tipo = document.getElementById("tipo").value;
 
-if(isNaN(mA)||isNaN(mB)||isNaN(mmA)||isNaN(mmB)){
-    res.innerHTML="⚠️ Completa todos los datos";
-    exp.innerHTML="";
+if(isNaN(mA)||isNaN(mB)||isNaN(mmA_val)||isNaN(mmB_val)){
+    document.getElementById("res").innerHTML="⚠️ Completa todos los datos correctamente";
+    document.getElementById("exp").innerHTML="";
     return;
 }
 
-// conversion a moles
-let nA = mA/mmA;
-let nB = mB/mmB;
+// conversión a moles
+let nA = mA/mmA_val;
+let nB = mB/mmB_val;
 
 let resultado="";
 let explicacion="";
@@ -113,7 +113,7 @@ if(tipo==="limitante"){
     }else{
         resultado="🔬 Reactivo B es LIMITANTE";
     }
-    explicacion="Se comparan los moles de cada reactivo. El menor es el limitante.";
+    explicacion="Se comparan los moles de cada reactivo. El que tiene menor cantidad se consume primero.";
 }
 
 if(tipo==="exceso"){
@@ -122,23 +122,23 @@ if(tipo==="exceso"){
     }else{
         resultado="⚗️ Reactivo B está en EXCESO";
     }
-    explicacion="El reactivo con mayor cantidad de moles queda en exceso.";
+    explicacion="El reactivo con mayor cantidad de moles queda sobrante.";
 }
 
 if(tipo==="rendimiento"){
     let rend = (Math.min(nA,nB)/Math.max(nA,nB))*100;
     resultado="📊 Rendimiento: "+rend.toFixed(2)+"%";
-    explicacion="Rendimiento = (cantidad real / teórica) × 100";
+    explicacion="Rendimiento = (cantidad real / cantidad teórica) × 100.";
 }
 
 if(tipo==="pureza"){
     let pureza = (mA/(mA+mB))*100;
     resultado="🧪 Pureza: "+pureza.toFixed(2)+"%";
-    explicacion="Pureza = (masa pura / masa total) × 100";
+    explicacion="Pureza = (masa del componente / masa total) × 100.";
 }
 
-res.innerHTML=resultado;
-exp.innerHTML=explicacion;
+document.getElementById("res").innerHTML=resultado;
+document.getElementById("exp").innerHTML=explicacion;
 
 }
 </script>
