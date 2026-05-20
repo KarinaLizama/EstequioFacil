@@ -1,147 +1,209 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>ChemEasy PRO</title>
-
-<style>
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0f172a, #1e3a8a);
-    color: white;
-    text-align: center;
-    margin: 0;
-}
-
-.container {
-    max-width: 420px;
-    margin: 40px auto;
-    background: rgba(255,255,255,0.05);
-    padding: 25px;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-}
-
-h1 { margin-bottom: 5px; }
-
-input, select {
-    width: 90%;
-    padding: 12px;
-    margin: 8px;
-    border-radius: 10px;
-    border: none;
-}
-
-button {
-    width: 95%;
-    padding: 15px;
-    border-radius: 10px;
-    border: none;
-    background: #22c55e;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.resultado {
-    margin-top: 15px;
-    padding: 15px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-}
-
-.explicacion {
-    margin-top: 10px;
-    font-size: 13px;
-    opacity: 0.8;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EstequioFácil</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f7fb; color: #1f2937; }
+    header { background: #1f4e79; color: white; padding: 20px; }
+    main { max-width: 1180px; margin: 0 auto; padding: 20px; }
+    .layout { display: grid; grid-template-columns: 1.2fr .8fr; gap: 16px; }
+    .card { background: white; border-radius: 18px; padding: 18px; box-shadow: 0 3px 12px rgba(0,0,0,.08); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 12px; }
+    label { display: block; font-weight: 700; margin-bottom: 4px; }
+    input, select, .action { width: 100%; padding: 11px; border-radius: 12px; border: 1px solid #c7d6e5; box-sizing: border-box; }
+    .action { background: #2f7fb7; color: white; border: 0; font-weight: 700; cursor: pointer; margin-top: 12px; }
+    .secondary { background: #e8edf3; color: #334155; }
+    .result { margin-top: 14px; background: #eef5fb; border-radius: 12px; padding: 14px; min-height: 60px; }
+    .small { color: #64748b; font-size: .94rem; }
+    h2, h3 { margin-top: 0; }
+    .pill { display:inline-block; background:#dbeafe; color:#1e3a8a; border-radius:999px; padding:6px 10px; font-size:.88rem; margin-bottom:12px; }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    .kpi { background:#f8fafc; border:1px solid #dbe5ef; border-radius:12px; padding:12px; margin-bottom:10px; }
+    .eq { font-family: 'Courier New', monospace; background:#0f172a; color:#e2e8f0; padding:10px 12px; border-radius:10px; margin:10px 0 14px; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+  </style>
 </head>
-
 <body>
+<header>
+  <h1>EstequioFácil</h1>
+  <p>Tema 3: Balance estequiométrico de reacciones químicas</p>
+</header>
+<main>
+  <div class="layout">
+    <section class="card">
+      <span class="pill">Calcula reactivo limitante, exceso, rendimiento y pureza</span>
+      <h2>Datos de entrada</h2>
+      <div class="eq">a A + b B → p Producto</div>
+      <div class="grid">
+        <div>
+          <label>Nombre reactivo A</label>
+          <input id="aName" value="H2" />
+        </div>
+        <div>
+          <label>Coeficiente A (a)</label>
+          <input id="aCoef" type="number" step="any" value="2" />
+        </div>
+        <div>
+          <label>Cantidad A</label>
+          <input id="aQty" type="number" step="any" value="10" />
+        </div>
+        <div>
+          <label>Unidad A</label>
+          <select id="aUnit"><option value="g">g</option><option value="mol">mol</option></select>
+        </div>
+        <div>
+          <label>Masa molar A (g/mol)</label>
+          <input id="aMM" type="number" step="any" value="2" />
+        </div>
+        <div>
+          <label>Pureza A (%)</label>
+          <input id="aPur" type="number" step="any" value="100" />
+        </div>
 
-<div class="container">
+        <div>
+          <label>Nombre reactivo B</label>
+          <input id="bName" value="O2" />
+        </div>
+        <div>
+          <label>Coeficiente B (b)</label>
+          <input id="bCoef" type="number" step="any" value="1" />
+        </div>
+        <div>
+          <label>Cantidad B</label>
+          <input id="bQty" type="number" step="any" value="40" />
+        </div>
+        <div>
+          <label>Unidad B</label>
+          <select id="bUnit"><option value="g">g</option><option value="mol">mol</option></select>
+        </div>
+        <div>
+          <label>Masa molar B (g/mol)</label>
+          <input id="bMM" type="number" step="any" value="32" />
+        </div>
+        <div>
+          <label>Pureza B (%)</label>
+          <input id="bPur" type="number" step="any" value="100" />
+        </div>
 
-<h1>🧪 ChemEasy PRO</h1>
-<p>Estequiometría simplificada</p>
+        <div>
+          <label>Nombre del producto</label>
+          <input id="pName" value="H2O" />
+        </div>
+        <div>
+          <label>Coeficiente producto (p)</label>
+          <input id="pCoef" type="number" step="any" value="2" />
+        </div>
+        <div>
+          <label>Masa molar producto (g/mol)</label>
+          <input id="pMM" type="number" step="any" value="18" />
+        </div>
+        <div>
+          <label>Rendimiento real (g, opcional)</label>
+          <input id="realY" type="number" step="any" value="40" />
+        </div>
+      </div>
+      <button class="action" onclick="calculate()">Calcular</button>
+      <button class="action secondary" onclick="resetForm()">Restablecer ejemplo</button>
+      <div class="result" id="summary"></div>
+    </section>
 
-<input id="masaA" placeholder="Masa Reactivo A (g)">
-<input id="masaB" placeholder="Masa Reactivo B (g)">
-
-<input id="mmA" placeholder="Masa molar A (g/mol)">
-<input id="mmB" placeholder="Masa molar B (g/mol)">
-
-<select id="tipo">
-    <option value="limitante">Reactivo limitante</option>
-    <option value="exceso">Reactivo en exceso</option>
-    <option value="rendimiento">Rendimiento (%)</option>
-    <option value="pureza">Pureza (%)</option>
-</select>
-
-<button onclick="calcular()">Calcular</button>
-
-<div class="resultado" id="res">Resultado aparecerá aquí</div>
-<div class="explicacion" id="exp"></div>
-
-</div>
-
+    <section class="card">
+      <h3>Resultados</h3>
+      <div id="results"></div>
+      <div class="result" id="steps"></div>
+    </section>
+  </div>
+</main>
 <script>
-function calcular(){
+function $(id){ return document.getElementById(id); }
+function f(n){ if(!isFinite(n)) return 'Error'; if(Math.abs(n)>=1e5 || (Math.abs(n)<1e-3 && n!==0)) return n.toExponential(4); return Number(n.toFixed(6)).toString(); }
+function toPureMoles(qty, unit, mm, pur){
+  const pureFactor = pur / 100;
+  if(unit === 'g') return (qty * pureFactor) / mm;
+  return qty * pureFactor;
+}
+function massFromMoles(moles, mm){ return moles * mm; }
+function kpi(label, value){ return `<div class="kpi"><strong>${label}</strong><br>${value}</div>`; }
+function calculate(){
+  const aName = $('aName').value || 'A';
+  const bName = $('bName').value || 'B';
+  const pName = $('pName').value || 'Producto';
+  const aCoef = parseFloat($('aCoef').value || 0);
+  const bCoef = parseFloat($('bCoef').value || 0);
+  const pCoef = parseFloat($('pCoef').value || 0);
+  const aQty = parseFloat($('aQty').value || 0);
+  const bQty = parseFloat($('bQty').value || 0);
+  const aMM = parseFloat($('aMM').value || 0);
+  const bMM = parseFloat($('bMM').value || 0);
+  const pMM = parseFloat($('pMM').value || 0);
+  const aPur = parseFloat($('aPur').value || 100);
+  const bPur = parseFloat($('bPur').value || 100);
+  const realY = parseFloat($('realY').value || 0);
+  const aUnit = $('aUnit').value;
+  const bUnit = $('bUnit').value;
 
-let mA = parseFloat(document.getElementById("masaA").value);
-let mB = parseFloat(document.getElementById("masaB").value);
-let mmA_val = parseFloat(document.getElementById("mmA").value);
-let mmB_val = parseFloat(document.getElementById("mmB").value);
-let tipo = document.getElementById("tipo").value;
-
-if(isNaN(mA)||isNaN(mB)||isNaN(mmA_val)||isNaN(mmB_val)){
-    document.getElementById("res").innerHTML="⚠️ Completa todos los datos correctamente";
-    document.getElementById("exp").innerHTML="";
+  if([aCoef,bCoef,pCoef,aMM,bMM,pMM].some(v => v <= 0)){
+    $('summary').innerHTML = 'Revisa coeficientes y masas molares. Deben ser mayores que 0.';
+    $('results').innerHTML = '';
+    $('steps').innerHTML = '';
     return;
+  }
+
+  const nA = toPureMoles(aQty, aUnit, aMM, aPur);
+  const nB = toPureMoles(bQty, bUnit, bMM, bPur);
+  const relA = nA / aCoef;
+  const relB = nB / bCoef;
+  const limiting = relA <= relB ? 'A' : 'B';
+  const limName = limiting === 'A' ? aName : bName;
+  const excName = limiting === 'A' ? bName : aName;
+  const rxnExtent = Math.min(relA, relB);
+
+  const usedA = rxnExtent * aCoef;
+  const usedB = rxnExtent * bCoef;
+  const prodMol = rxnExtent * pCoef;
+  const prodMass = massFromMoles(prodMol, pMM);
+  const remA = Math.max(0, nA - usedA);
+  const remB = Math.max(0, nB - usedB);
+  const remAMass = massFromMoles(remA, aMM);
+  const remBMass = massFromMoles(remB, bMM);
+  const yieldPct = realY > 0 ? (realY / prodMass) * 100 : null;
+  const pureMassA = aUnit === 'g' ? aQty * (aPur/100) : nA * aMM;
+  const pureMassB = bUnit === 'g' ? bQty * (bPur/100) : nB * bMM;
+
+  $('summary').innerHTML = `<strong>${aCoef}${aName} + ${bCoef}${bName} → ${pCoef}${pName}</strong><br>` +
+    `La herramienta trabaja con cantidad pura, convierte a moles y compara n/coefficient para identificar el reactivo limitante.`;
+
+  $('results').innerHTML =
+    kpi('Reactivo limitante', limName) +
+    kpi('Reactivo en exceso', excName) +
+    kpi(`Rendimiento teórico de ${pName}`, `${f(prodMol)} mol = ${f(prodMass)} g`) +
+    kpi(`Exceso remanente de ${aName}`, `${f(remA)} mol = ${f(remAMass)} g`) +
+    kpi(`Exceso remanente de ${bName}`, `${f(remB)} mol = ${f(remBMass)} g`) +
+    kpi(`Pureza aplicada ${aName}`, `${f(aPur)} % (${f(pureMassA)} g puros equivalentes)`) +
+    kpi(`Pureza aplicada ${bName}`, `${f(bPur)} % (${f(pureMassB)} g puros equivalentes)`) +
+    (yieldPct !== null ? kpi('% de rendimiento', `${f(yieldPct)} %`) : '');
+
+  $('steps').innerHTML =
+    `<strong>Desarrollo paso a paso</strong><ul>` +
+    `<li>Moles puros de ${aName}: ${aUnit === 'g' ? `${f(aQty)}×${f(aPur/100)}/${f(aMM)}` : `${f(aQty)}×${f(aPur/100)}`} = <strong>${f(nA)} mol</strong>.</li>` +
+    `<li>Moles puros de ${bName}: ${bUnit === 'g' ? `${f(bQty)}×${f(bPur/100)}/${f(bMM)}` : `${f(bQty)}×${f(bPur/100)}`} = <strong>${f(nB)} mol</strong>.</li>` +
+    `<li>Comparación estequiométrica: ${aName} → ${f(nA)}/${f(aCoef)} = <strong>${f(relA)}</strong>; ${bName} → ${f(nB)}/${f(bCoef)} = <strong>${f(relB)}</strong>.</li>` +
+    `<li>El menor valor define el reactivo limitante: <strong>${limName}</strong>.</li>` +
+    `<li>Moles teóricos de ${pName}: ${f(rxnExtent)}×${f(pCoef)} = <strong>${f(prodMol)} mol</strong>.</li>` +
+    `<li>Masa teórica de ${pName}: ${f(prodMol)}×${f(pMM)} = <strong>${f(prodMass)} g</strong>.</li>` +
+    `<li>${aName} remanente: <strong>${f(remA)} mol</strong> (${f(remAMass)} g). ${bName} remanente: <strong>${f(remB)} mol</strong> (${f(remBMass)} g).</li>` +
+    (yieldPct !== null ? `<li>Rendimiento porcentual: ${f(realY)}/${f(prodMass)}×100 = <strong>${f(yieldPct)} %</strong>.</li>` : '') +
+    `</ul>`;
 }
-
-// conversión a moles
-let nA = mA/mmA_val;
-let nB = mB/mmB_val;
-
-let resultado="";
-let explicacion="";
-
-if(tipo==="limitante"){
-    if(nA<nB){
-        resultado="🔬 Reactivo A es LIMITANTE";
-    }else{
-        resultado="🔬 Reactivo B es LIMITANTE";
-    }
-    explicacion="Se comparan los moles de cada reactivo. El que tiene menor cantidad se consume primero.";
+function resetForm(){
+  $('aName').value='H2'; $('aCoef').value='2'; $('aQty').value='10'; $('aUnit').value='g'; $('aMM').value='2'; $('aPur').value='100';
+  $('bName').value='O2'; $('bCoef').value='1'; $('bQty').value='40'; $('bUnit').value='g'; $('bMM').value='32'; $('bPur').value='100';
+  $('pName').value='H2O'; $('pCoef').value='2'; $('pMM').value='18'; $('realY').value='40';
+  calculate();
 }
-
-if(tipo==="exceso"){
-    if(nA>nB){
-        resultado="⚗️ Reactivo A está en EXCESO";
-    }else{
-        resultado="⚗️ Reactivo B está en EXCESO";
-    }
-    explicacion="El reactivo con mayor cantidad de moles queda sobrante.";
-}
-
-if(tipo==="rendimiento"){
-    let rend = (Math.min(nA,nB)/Math.max(nA,nB))*100;
-    resultado="📊 Rendimiento: "+rend.toFixed(2)+"%";
-    explicacion="Rendimiento = (cantidad real / cantidad teórica) × 100.";
-}
-
-if(tipo==="pureza"){
-    let pureza = (mA/(mA+mB))*100;
-    resultado="🧪 Pureza: "+pureza.toFixed(2)+"%";
-    explicacion="Pureza = (masa del componente / masa total) × 100.";
-}
-
-document.getElementById("res").innerHTML=resultado;
-document.getElementById("exp").innerHTML=explicacion;
-
-}
+calculate();
 </script>
-
 </body>
 </html>
