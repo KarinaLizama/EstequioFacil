@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Quimitool7</title>
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    text-align: center;
+}
+.container {
+    background: #1e293b;
+    padding: 20px;
+    margin: 30px auto;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+input, button, select {
+    margin: 10px;
+    padding: 10px;
+    width: 80%;
+    border-radius: 5px;
+}
+button {
+    background: #22c55e;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.resultado {
+    margin-top: 20px;
+    background: #334155;
+    padding: 15px;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧪 Quimitool7</h1>
+<p>Balance estequiométrico fácil</p>
+
+<div class="container">
+
+<input id="reactivo1" placeholder="Masa Reactivo A (g)">
+<input id="reactivo2" placeholder="Masa Reactivo B (g)">
+
+<select id="opcion">
+    <option value="limitante">Reactivo limitante</option>
+    <option value="exceso">Reactivo en exceso</option>
+    <option value="rendimiento">Rendimiento (%)</option>
+    <option value="pureza">Pureza (%)</option>
+</select>
+
+<button onclick="calcular()">Calcular</button>
+
+<div class="resultado" id="resultado"></div>
+
+</div>
+
+<script>
+function calcular() {
+
+    let a = parseFloat(document.getElementById("reactivo1").value);
+    let b = parseFloat(document.getElementById("reactivo2").value);
+    let opcion = document.getElementById("opcion").value;
+    let resultado = "";
+
+    if (isNaN(a) || isNaN(b)) {
+        resultado = "⚠️ Ingresa valores válidos";
+    } else {
+
+        if (opcion === "limitante") {
+            resultado = (a < b)
+                ? "Reactivo A es limitante"
+                : "Reactivo B es limitante";
+        }
+
+        if (opcion === "exceso") {
+            resultado = (a > b)
+                ? "Reactivo A está en exceso"
+                : "Reactivo B está en exceso";
+        }
+
+        if (opcion === "rendimiento") {
+            let teorico = Math.max(a, b);
+            let real = Math.min(a, b);
+            let rendimiento = (real / teorico) * 100;
+            resultado = "Rendimiento: " + rendimiento.toFixed(2) + "%";
+        }
+
+        if (opcion === "pureza") {
+            let pureza = (a / (a + b)) * 100;
+            resultado = "Pureza: " + pureza.toFixed(2) + "%";
+        }
+    }
+
+    document.getElementById("resultado").innerHTML = resultado;
+}
+</script>
+
+</body>
+</html>
